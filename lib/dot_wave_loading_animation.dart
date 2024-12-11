@@ -4,17 +4,17 @@ void main() {
   runApp(const MyApp());
 }
 
-class LoadingAnimation extends StatefulWidget {
-  const LoadingAnimation({super.key});
+class DotWaveLoadingAnimation extends StatefulWidget {
+  const DotWaveLoadingAnimation({super.key});
 
   @override
-  LoadingAnimationState createState() => LoadingAnimationState();
+  DotWaveLoadingAnimationState createState() => DotWaveLoadingAnimationState();
 }
 
-class LoadingAnimationPainter extends CustomPainter {
+class DotWaveLoadingAnimationPainter extends CustomPainter {
   final Animation<double> animation;
 
-  LoadingAnimationPainter(this.animation) : super(repaint: animation);
+  DotWaveLoadingAnimationPainter(this.animation) : super(repaint: animation);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -32,7 +32,7 @@ class LoadingAnimationPainter extends CustomPainter {
   }
 }
 
-class LoadingAnimationState extends State<LoadingAnimation>
+class DotWaveLoadingAnimationState extends State<DotWaveLoadingAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
@@ -40,7 +40,7 @@ class LoadingAnimationState extends State<LoadingAnimation>
   Widget build(BuildContext context) {
     return CustomPaint(
       size: const Size(100, 100),
-      painter: LoadingAnimationPainter(_controller),
+      painter: DotWaveLoadingAnimationPainter(_controller),
     );
   }
 
@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       home: Scaffold(
         body: Center(
-          child: LoadingAnimation(),
+          child: DotWaveLoadingAnimation(),
         ),
       ),
     );

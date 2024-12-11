@@ -7,27 +7,28 @@ void main() {
     home: Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: CustomLoadingWidget(),
+        child: PulsatingLoadingAnimation(),
       ),
     ),
   ));
 }
 
-class CustomLoadingWidget extends StatefulWidget {
-  const CustomLoadingWidget({super.key});
+class PulsatingLoadingAnimation extends StatefulWidget {
+  const PulsatingLoadingAnimation({super.key});
 
   @override
-  CustomLoadingWidgetState createState() => CustomLoadingWidgetState();
+  PulsatingLoadingAnimationState createState() =>
+      PulsatingLoadingAnimationState();
 }
 
-class CustomLoadingWidgetState extends State<CustomLoadingWidget>
+class PulsatingLoadingAnimationState extends State<PulsatingLoadingAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: _ComplexLoadingPainter(animation: _controller),
+      painter: PulsatingLoadingPainter(animation: _controller),
       child: const SizedBox(
         width: 100,
         height: 100,
@@ -51,10 +52,11 @@ class CustomLoadingWidgetState extends State<CustomLoadingWidget>
   }
 }
 
-class _ComplexLoadingPainter extends CustomPainter {
+class PulsatingLoadingPainter extends CustomPainter {
   final Animation<double> animation;
 
-  _ComplexLoadingPainter({required this.animation}) : super(repaint: animation);
+  PulsatingLoadingPainter({required this.animation})
+      : super(repaint: animation);
 
   @override
   void paint(Canvas canvas, Size size) {

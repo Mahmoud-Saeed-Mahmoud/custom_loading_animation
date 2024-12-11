@@ -8,55 +8,25 @@ void main() {
       home: Scaffold(
         backgroundColor: Colors.white,
         body: Center(
-          child: CustomLoadingWidget(),
+          child: AnimatedCircleLoader(),
         ),
       ),
     ),
   );
 }
 
-class CustomLoadingWidget extends StatefulWidget {
-  const CustomLoadingWidget({super.key});
+class AnimatedCircleLoader extends StatefulWidget {
+  const AnimatedCircleLoader({super.key});
 
   @override
-  CustomLoadingWidgetState createState() => CustomLoadingWidgetState();
+  AnimatedCircleLoaderState createState() => AnimatedCircleLoaderState();
 }
 
-class CustomLoadingWidgetState extends State<CustomLoadingWidget>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: _LoadingPainter(animation: _controller),
-      child: const SizedBox(
-        width: 100,
-        height: 100,
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 2),
-    )..repeat();
-  }
-}
-
-class _LoadingPainter extends CustomPainter {
+class AnimatedCircleLoaderPainter extends CustomPainter {
   final Animation<double> animation;
 
-  _LoadingPainter({required this.animation}) : super(repaint: animation);
+  AnimatedCircleLoaderPainter({required this.animation})
+      : super(repaint: animation);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -89,4 +59,35 @@ class _LoadingPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+}
+
+class AnimatedCircleLoaderState extends State<AnimatedCircleLoader>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      painter: AnimatedCircleLoaderPainter(animation: _controller),
+      child: const SizedBox(
+        width: 100,
+        height: 100,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )..repeat();
+  }
 }

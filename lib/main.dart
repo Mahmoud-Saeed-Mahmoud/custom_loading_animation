@@ -6,52 +6,14 @@ void main() {
   runApp(const MyApp());
 }
 
-class LoadingAnimation extends StatefulWidget {
-  const LoadingAnimation({super.key});
+class BouncingDotsAnimation extends StatefulWidget {
+  const BouncingDotsAnimation({super.key});
 
   @override
-  LoadingAnimationState createState() => LoadingAnimationState();
+  BouncingDotsAnimationState createState() => BouncingDotsAnimationState();
 }
 
-class LoadingAnimationPainter extends CustomPainter {
-  final Animation<double> animation;
-
-  LoadingAnimationPainter(this.animation) : super(repaint: animation);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()..style = PaintingStyle.fill;
-
-    // Define parameters for circles
-    final List<double> radii = [20, 30, 40, 50];
-    final List<Color> colors = [
-      Colors.blue,
-      Colors.red,
-      Colors.green,
-      Colors.orange,
-    ];
-
-    // Calculate rotation angle
-    double angle = animation.value * 2 * pi;
-
-    // Draw multiple circles with rotation and color change
-    for (int i = 0; i < radii.length; i++) {
-      paint.color = colors[i % colors.length].withOpacity(1 - animation.value);
-      double radius = radii[i] * animation.value;
-      canvas.save();
-      canvas.rotate(angle + (i * pi / 4)); // Rotate each circle
-      canvas.drawCircle(size.center(Offset.zero), radius, paint);
-      canvas.restore();
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
-}
-
-class LoadingAnimationState extends State<LoadingAnimation>
+class BouncingDotsAnimationState extends State<BouncingDotsAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
@@ -59,7 +21,7 @@ class LoadingAnimationState extends State<LoadingAnimation>
   Widget build(BuildContext context) {
     return CustomPaint(
       size: const Size(100, 100),
-      painter: LoadingAnimationPainter(_controller),
+      painter: BouncingDotsPainter(_controller),
     );
   }
 
@@ -73,9 +35,42 @@ class LoadingAnimationState extends State<LoadingAnimation>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 1),
       vsync: this,
-    )..repeat(reverse: true);
+    )..repeat();
+  }
+}
+
+class BouncingDotsPainter extends CustomPainter {
+  final Animation<double> animation;
+
+  BouncingDotsPainter(this.animation) : super(repaint: animation);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..style = PaintingStyle.fill;
+
+    // Define parameters for dots
+    final List<double> offsets = [0, 1, 2]; // Three dots
+    const double radius = 10;
+
+    for (int i = 0; i < offsets.length; i++) {
+      // Calculate the y position based on the animation value
+      double yOffset = sin(animation.value * 2 * pi + (i * pi / 1.5)) * 10;
+      paint.color = Colors.primaries[i % Colors.primaries.length];
+
+      // Draw the dot
+      canvas.drawCircle(
+        Offset(size.width / 2 + (i - 1) * 30, size.height / 2 + yOffset),
+        radius,
+        paint,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
   }
 }
 
@@ -87,7 +82,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       home: Scaffold(
         body: Center(
-          child: LoadingAnimation(),
+          child: BouncingDotsAnimation(),
         ),
       ),
     );
