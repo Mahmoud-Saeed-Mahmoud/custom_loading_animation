@@ -1,6 +1,5 @@
+import 'package:custom_loading_animation/rotating_squares_animation.dart';
 import 'package:flutter/material.dart';
-
-import 'spiral_lines_loading_animation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +13,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       home: Scaffold(
         body: Center(
-          child: SpiralLinesLoadingAnimation(),
+          child: RotatingSquaresAnimation(),
         ),
       ),
     );
